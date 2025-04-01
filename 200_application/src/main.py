@@ -16,7 +16,8 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from azure.monitor.opentelemetry import configure_azure_monitor
 
 # Import our application components
-from src.api.router import router
+from src.api.router import router as api_router
+from src.infra.router import router as infra_router
 from src.config import settings
 
 # Configure logging
@@ -69,8 +70,9 @@ if settings.enable_telemetry:
         logger.error(f"Failed to configure OpenTelemetry: {e}")
 
 # Include API routes
-app.include_router(router)
+app.include_router(api_router)
+app.include_router(infra_router)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("src.main:app", host="0.0.0.0", port=8000)

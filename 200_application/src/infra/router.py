@@ -1,0 +1,37 @@
+"""
+Infrastructure router for handling system-level HTTP requests.
+"""
+from fastapi import APIRouter, status, Header, HTTPException
+from typing import Dict, Optional
+from src.config import settings
+
+router = APIRouter(tags=["infrastructure"])
+
+@router.get("/health", status_code=status.HTTP_200_OK)
+async def health_check(authorization: Optional[str] = Header(None)) -> Dict[str, str]:
+    """
+    Health check endpoint that requires Bearer token authentication.
+    
+    Args:
+        authorization: Bearer token from Authorization header
+        
+    Returns:
+        Dict[str, str]: Status message indicating the service is healthy
+        
+    Raises:
+        HTTPException: If authentication fails
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing Bearer token"
+        )
+        
+    token = authorization.split("Bearer ")[1]
+    if token != settings.health_check_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token"
+        )
+        
+    return {"status": "healthy"}

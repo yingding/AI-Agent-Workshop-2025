@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     # API Settings
     api_prefix: str = Field("/api", description="API endpoint prefix")
     
+    # Health Check Settings
+    health_check_token: str = Field(
+        "vh7EBWcZq4kP9XmN2sYgT8JH3aRd6MuQ",  # Hardcoded token as requested
+        description="Token for health check authentication"
+    )
+    
     # Telemetry Settings
     enable_telemetry: bool = Field(True, description="Flag to enable/disable telemetry")
     azure_monitor_connection_string: Optional[str] = Field(
