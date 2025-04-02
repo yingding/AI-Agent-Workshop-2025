@@ -4,6 +4,7 @@ Handles application setup, middleware configuration, and API route registration.
 """
 import logging
 import os
+import sys
 from dotenv import load_dotenv
 
 # Load environment variables from .env file as early as possible
@@ -20,11 +21,15 @@ from src.api.router import router as api_router
 from src.infra.router import router as infra_router
 from src.config import settings
 
-# Configure logging
+# Configure logging to use stdout
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    stream=sys.stdout
 )
+# Configure Azure HTTP logging policy
+logging.getLogger("azure.core.pipeline.policies.http_logging_policy").setLevel(logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 # Lifespan context manager for startup and shutdown events

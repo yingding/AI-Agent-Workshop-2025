@@ -4,10 +4,9 @@ Handles loading environment variables and providing settings to the application.
 """
 import os
 from typing import Optional
-from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import BaseModel, Field
 
-class Settings(BaseSettings):
+class Settings(BaseModel):
     """Application settings loaded from environment variables."""
     # API Settings
     api_prefix: str = Field("/api", description="API endpoint prefix")
@@ -24,11 +23,16 @@ class Settings(BaseSettings):
         None, 
         description="Connection string for Azure Monitor"
     )
-    
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
         case_sensitive = False
 
-# Create settings instance
-settings = Settings()
+# Create settings instance by parsing environment variables
+settings = Settings(
+    api_prefix=os.getenv("API_PREFIX", "/api"),
+    health_check_token=os.getenv("HEALTH_CHECK_TOKEN", "vh7EBWcZq4kP9XmN2sYgT8JH3aRd6MuQ"),
+    enable_telemetry=os.getenv("ENABLE_TELEMETRY", "true").lower() == "true",
+    azure_monitor_connection_string=os.getenv("AZURE_MONITOR_CONNECTION_STRING")
+)
