@@ -1,5 +1,7 @@
 """
 Pizza chat module using Semantic Kernel for handling pizza-related AI interactions.
+This implementation uses direct Semantic Kernel integration without the Azure AI Agent
+wrapper, providing a simpler but more limited chat experience.
 """
 import os
 import logging
@@ -14,51 +16,69 @@ import json
 logger = logging.getLogger(__name__)
 
 class PizzaChatSK:
-    """Class for interacting with the pizza-chat using Semantic Kernel."""
+    """
+    Class for interacting with the pizza-chat using direct Semantic Kernel integration.
+    Provides a straightforward chat experience using Azure AI Chat Completion.
+    """
     
     def __init__(self) -> None:
-        """Initialize the PizzaChatSK with Semantic Kernel setup."""
+        """
+        Initialize the PizzaChatSK with Semantic Kernel setup.
+        Sets up the system prompt that defines the assistant's behavior.
+        """
         load_dotenv()
                 
-        # System prompt for the pizza agent
+        # System prompt defines the AI's role and behavior
         self.system_prompt = """You are a helpful assistant which answers questions on pizza dough recipes and methods.
 You politely refuse to talk about any other topic.
 Base your answers on established pizza-making techniques and best practices."""
     
     async def process_message(self, message: str, conversation_id: str | None = None) -> Dict[str, Any]:
         """
-        Process a message using the Semantic Kernel pizza agent.
+        Process a message using direct Semantic Kernel chat completion.
+        Simpler than the Agent-based approach but lacks advanced features.
         
         Args:
-            message: The user's message to process
-            conversation_id: Optional conversation ID for continuing an existing conversation
+            message: The user's message about pizza-related topics
+            conversation_id: Optional ID for conversation tracking (not used in this implementation)
             
         Returns:
-            Dict[str, Any]: The agent's response including conversation_id
+            Dict[str, Any]: Response containing:
+                - status: "success" or "error"
+                - message: The AI's response text
+                - conversation_id: Always returns the input conversation_id
+            
+        Note:
+            This implementation doesn't maintain conversation history between calls.
+            Each request is treated as a new conversation with just the system prompt
+            and the current user message.
         """
         try:
-            # Initialize the Semantic Kernel
+            # Initialize a new Kernel for each request
             kernel = Kernel()
             
-            # Configure Azure OpenAI Chat Completion
+            # Configure Azure OpenAI Chat Completion with default settings
             azure_chat_completion = AzureAIInferenceChatCompletion(
                 ai_model_id="gpt-4o",
             )
 
-            # Construct the chat history
+            # Create a fresh chat history for this request
             chat_history = ChatHistory()
             chat_history.add_system_message(self.system_prompt)
             chat_history.add_user_message(message)
 
+            # Configure completion parameters
             execution_settings = AzureAIInferenceChatPromptExecutionSettings(
-                max_tokens=400,
-                temperature=0.7,
-                top_p=0.9,
-                # extra_parameters={...},    # model-specific parameters
+                max_tokens=400,     # Limit response length
+                temperature=0.7,    # Moderate creativity
+                top_p=0.9,         # Diverse but focused responses
             )
             
-            # Get the chat message content
-            response = await azure_chat_completion.get_chat_message_content(chat_history, settings=execution_settings)
+            # Get the chat response
+            response = await azure_chat_completion.get_chat_message_content(
+                chat_history, 
+                settings=execution_settings
+            )
             
             logger.info(f"Response received:\n{json.dumps(response.to_dict(), indent=2)}")
 

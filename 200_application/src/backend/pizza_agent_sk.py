@@ -1,5 +1,6 @@
 """
 Pizza agent module using Semantic Kernel with AzureAIAgent for handling pizza-related AI interactions.
+Provides a specialized AI assistant that focuses exclusively on pizza-related queries.
 """
 import os
 import logging
@@ -12,10 +13,16 @@ from dotenv import load_dotenv
 logger = logging.getLogger(__name__)
 
 class PizzaAgentSK:
-    """Class for interacting with the pizza-agent using Semantic Kernel with AzureAIAgent."""
+    """
+    Class for interacting with the pizza-agent using Semantic Kernel with AzureAIAgent.
+    Handles agent initialization, thread management, and message processing.
+    """
     
     def __init__(self) -> None:
-        """Initialize the PizzaAgentSK with Semantic Kernel setup."""
+        """
+        Initialize the PizzaAgentSK with Semantic Kernel setup.
+        Sets up Azure credentials and creates/retrieves the pizza agent instance.
+        """
         load_dotenv()
         
         # Initialize Azure credentials and project client
@@ -26,7 +33,7 @@ class PizzaAgentSK:
         )
         
         try:
-            # Look for existing pizza-agent
+            # Look for existing pizza-agent or create new one
             temp_project_client = AIProjectClient.from_connection_string(
                 credential=self.credential,
                 conn_str=os.environ["PROJECT_CONNECTION_STRING"]
@@ -40,7 +47,7 @@ class PizzaAgentSK:
             
             if not agent_definition:
                 logger.info("Creating new pizza-agent, agent wasn't found")
-                # Create new agent if it doesn't exist
+                # Create new agent with pizza-specific instructions
                 model_name = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4o")
                 instructions = (
                     "You are a helpful assistant which answers questions on pizza dough recipies and methods." 
@@ -70,18 +77,22 @@ class PizzaAgentSK:
         Process a message using the Semantic Kernel pizza agent.
         
         Args:
-            message: The user's message to process
-            thread_id: Optional thread ID for continuing an existing conversation
+            message: The user's message to process about pizza-related topics
+            thread_id: Optional thread ID for maintaining conversation context
             
         Returns:
-            Dict[str, Any]: The agent's response including thread_id
+            Dict[str, Any]: Response object containing:
+                - status: "success" or "error"
+                - message: The agent's response text
+                - thread_id: Conversation thread identifier
             
         Raises:
             Exception: If message processing fails
         """
         try:
+            # Create or reuse conversation thread
             thread = AzureAIAgentThread(
-                client= self.project_client,
+                client=self.project_client,
                 thread_id=thread_id,
             )
             logger.info(f"Processing message at agent {self.agent.id} with thread {thread_id}")

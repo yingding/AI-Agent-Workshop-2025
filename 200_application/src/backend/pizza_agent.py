@@ -1,5 +1,7 @@
 """
 Pizza agent module for handling pizza-related AI interactions.
+This implementation uses the full Azure AI Agent service capabilities,
+providing advanced features like conversation thread management and error handling.
 """
 import os
 import logging
@@ -13,13 +15,20 @@ import json
 logger = logging.getLogger(__name__)
 
 class PizzaAgent:
-    """Class for interacting with the pizza-agent AI model."""
+    """
+    Class for interacting with the pizza-agent using Azure AI Agent service.
+    Provides full agent capabilities including persistent conversation threads,
+    message history, and robust error handling.
+    """
     
     def __init__(self) -> None:
-        """Initialize the PizzaAgent with Azure AI project client."""
+        """
+        Initialize the PizzaAgent with Azure AI project client.
+        Sets up authentication and creates/retrieves the agent instance.
+        """
         load_dotenv()
         
-        # Initialize Azure credentials and client
+        # Initialize Azure credentials and client for API access
         self.credential = DefaultAzureCredential()
         self.project_client = AIProjectClient.from_connection_string(
             credential=self.credential,
@@ -32,9 +41,15 @@ class PizzaAgent:
         self._initialize_agent()
     
     def _initialize_agent(self) -> None:
-        """Initialize or retrieve the pizza-agent."""
+        """
+        Initialize or retrieve the pizza-agent.
+        Either finds an existing agent or creates a new one with pizza-specific instructions.
+        
+        Raises:
+            Exception: If agent initialization fails
+        """
         try:
-            # Look for existing pizza-agent
+            # Look for existing pizza-agent in the project
             all_agents = self.project_client.agents.list_agents().data
             self.agent = next(
                 (a for a in all_agents if a.name == "pizza-agent"),
@@ -43,7 +58,7 @@ class PizzaAgent:
             
             if not self.agent:
                 logger.info("Creating new pizza-agent, agent wasn't found")
-                # Create new agent if it doesn't exist
+                # Create new agent with pizza-specific behavior
                 model_name = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4o")
                 instructions = (
                     "You are a helpful assistant which answers questions on pizza dough recipies and methods." 
@@ -66,23 +81,34 @@ class PizzaAgent:
     async def process_message(self, message: str, thread_id: str | None = None) -> Dict[str, Any]:
         """
         Process a message using the pizza-agent.
+        Maintains conversation context through thread management.
         
         Args:
-            message: The user's message to process
+            message: The user's pizza-related query
             thread_id: Optional thread ID for continuing an existing conversation
             
         Returns:
-            Dict[str, Any]: The agent's response including thread_id
+            Dict[str, Any]: Response containing:
+                - status: "success" or "error"
+                - message: The agent's response text
+                - message_id: Unique ID of the response message
+                - thread_id: Conversation thread identifier
             
-        Raises:
-            Exception: If message processing fails
+        Examples:
+            >>> result = await agent.process_message("How do I make pizza dough?")
+            >>> print(result)
+            {
+                "status": "success",
+                "message": "To make pizza dough...",
+                "message_id": "msg_123...",
+                "thread_id": "thread_456..."
+            }
         """
-        
         try:
-            # If thread_id is provided, try to verify it exists
+            # Handle thread management
             if thread_id:
                 try:
-                    # Try to list messages to verify thread exists
+                    # Verify thread exists and is accessible
                     self.project_client.agents.list_messages(thread_id=thread_id)
                     self.thread = type('Thread', (), {'id': thread_id})()
                     logger.info(f"Using existing thread: {thread_id}")
@@ -94,11 +120,11 @@ class PizzaAgent:
                         "thread_id": None
                     }
             else:
-                # Create new thread if none provided
+                # Create new conversation thread
                 self.thread = self.project_client.agents.create_thread()
                 logger.info(f"Created new thread: {self.thread.id}")
             
-            # Create message in thread
+            # Add user message to thread
             logger.info(f"Creating new message in thread {self.thread.id}")
             self.project_client.agents.create_message(
                 thread_id=self.thread.id,
@@ -107,7 +133,7 @@ class PizzaAgent:
             )
             logger.info("Message created successfully")
             
-            # Run the agent
+            # Process the message with the agent
             logger.info(f"Starting agent run with agent_id: {self.agent.id}")
             run = self.project_client.agents.create_and_process_run(
                 thread_id=self.thread.id,
@@ -115,24 +141,13 @@ class PizzaAgent:
             )
             logger.info(f"Agent run created with run_id: {run.id}")
             
-            # Get the response
+            # Retrieve the agent's response
             logger.info("Retrieving messages from thread")
             messages = self.project_client.agents.list_messages(
                 thread_id=self.thread.id
             )
             
-            # Log messages
-            #logger.info(json.dumps(messages.as_dict(), indent=2))
-
-            #messages = messages.data
-            #logger.info(f"Retrieved {len(messages)} messages from thread")
-
-            # Return the latest assistant message
-            #agent_messages = [
-            #    msg for msg in messages 
-            #    if msg.role == MessageRole.AGENT 
-            #]
-            
+            # Get the most recent agent response
             last_agent_msg = messages.get_last_message_by_role(MessageRole.AGENT)
 
             if last_agent_msg:

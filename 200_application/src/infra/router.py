@@ -1,5 +1,6 @@
 """
 Infrastructure router for handling system-level HTTP requests.
+Provides endpoints for system health monitoring and infrastructure-related operations.
 """
 from fastapi import APIRouter, status, Header, HTTPException
 from typing import Dict, Optional
@@ -10,7 +11,13 @@ router = APIRouter(tags=["infrastructure"])
 @router.get("/health", status_code=status.HTTP_200_OK)
 async def health_check(authorization: Optional[str] = Header(None)) -> Dict[str, str]:
     """
-    Health check endpoint that requires Bearer token authentication.
+    Health check endpoint for monitoring system status.
+    Protected by Bearer token authentication for security.
+    
+    Used by:
+    - Kubernetes liveness/readiness probes
+    - Load balancer health checks
+    - Monitoring systems
     
     Args:
         authorization: Bearer token from Authorization header
@@ -19,7 +26,7 @@ async def health_check(authorization: Optional[str] = Header(None)) -> Dict[str,
         Dict[str, str]: Status message indicating the service is healthy
         
     Raises:
-        HTTPException: If authentication fails
+        HTTPException(401): If Bearer token is missing or invalid
     """
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
