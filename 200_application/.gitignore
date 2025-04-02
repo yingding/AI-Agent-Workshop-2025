@@ -1,3 +1,7 @@
+# Sensitive configuration
+kube/cfg/
+
+
 # Python
 __pycache__/
 *.py[cod]

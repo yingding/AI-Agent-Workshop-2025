@@ -6,7 +6,7 @@ metadata:
   labels:
     app: agentapp
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: agentapp
@@ -19,13 +19,20 @@ spec:
     metadata:
       labels:
         app: agentapp
+        azure.workload.identity/use: "true"
     spec:
+      serviceAccountName: agentapp-sa
       containers:
       - name: agentapp
-        image: agent45dge4.azurecr.io/test:2
+        image: agent45dge4.azurecr.io/agent:1
         ports:
         - containerPort: 8000
           name: http
+        envFrom:
+        - configMapRef:
+            name: agentapp-config
+        - secretRef:
+            name: agentapp-secrets
         resources:
           requests:
             cpu: "500m"
