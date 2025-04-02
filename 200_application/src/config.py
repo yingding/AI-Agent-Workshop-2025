@@ -17,6 +17,12 @@ class Settings(BaseModel):
         description="Token for health check authentication"
     )
     
+    # Backend Selection
+    use_semantic_kernel: bool = Field(
+        False, 
+        description="Flag to use Semantic Kernel backend instead of Azure AI Agent"
+    )
+    
     # Telemetry Settings
     enable_telemetry: bool = Field(True, description="Flag to enable/disable telemetry")
     azure_monitor_connection_string: Optional[str] = Field(
@@ -33,6 +39,7 @@ class Settings(BaseModel):
 settings = Settings(
     api_prefix=os.getenv("API_PREFIX", "/api"),
     health_check_token=os.getenv("HEALTH_CHECK_TOKEN", "vh7EBWcZq4kP9XmN2sYgT8JH3aRd6MuQ"),
+    use_semantic_kernel=os.getenv("USE_SEMANTIC_KERNEL", "true").lower() == "true",
     enable_telemetry=os.getenv("ENABLE_TELEMETRY", "true").lower() == "true",
     azure_monitor_connection_string=os.getenv("AZURE_MONITOR_CONNECTION_STRING")
 )

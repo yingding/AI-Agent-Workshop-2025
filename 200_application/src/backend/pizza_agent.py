@@ -44,7 +44,7 @@ class PizzaAgent:
             if not self.agent:
                 logger.info("Creating new pizza-agent, agent wasn't found")
                 # Create new agent if it doesn't exist
-                model_name = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4")
+                model_name = os.environ.get("MODEL_DEPLOYMENT_NAME", "gpt-4o")
                 instructions = (
                     "You are a helpful assistant which answers questions on pizza dough recipies and methods." 
                     "You politely refuse to talk about any other topic."
