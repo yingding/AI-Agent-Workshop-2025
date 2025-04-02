@@ -7,7 +7,8 @@ import logging
 
 from src.backend.pizza_agent import PizzaAgent
 from src.backend.pizza_chat_sk import PizzaChatSK
-from src.config import settings
+from src.backend.pizza_agent_sk import PizzaAgentSK
+from src.config import settings, BackendType
 
 logger = logging.getLogger(__name__)
 
@@ -16,10 +17,13 @@ class PizzaService:
     
     def __init__(self) -> None:
         """Initialize the PizzaService with appropriate backend."""
-        if settings.use_semantic_kernel:
+        if settings.backend_type == BackendType.SEMANTIC_KERNEL:
             logger.info("Initializing with Semantic Kernel backend")
             self.agent = PizzaChatSK()
-        else:
+        elif settings.backend_type == BackendType.SEMANTIC_KERNEL_AGENT:
+            logger.info("Initializing with Semantic Kernel Agent backend")
+            self.agent = PizzaAgentSK()
+        else:  # Default to AZURE_AI_AGENT
             logger.info("Initializing with Azure AI Agent backend")
             self.agent = PizzaAgent()
         
@@ -35,4 +39,6 @@ class PizzaService:
             Dict[str, Any]: Response from the backend including thread_id/conversation_id
         """
         logger.info(f"Processing pizza request with thread_id: {thread_id}")
-        return await self.agent.process_message(message, thread_id if not settings.use_semantic_kernel else None)
+        # Only pass thread_id to the Azure AI Agent backend, as other backends don't support it
+        use_thread = settings.backend_type != BackendType.SEMANTIC_KERNEL
+        return await self.agent.process_message(message, thread_id if use_thread else None)
