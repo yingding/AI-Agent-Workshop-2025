@@ -1,11 +1,21 @@
-azure-ai-projects==1.0.0b7
-azure-identity==1.21.0
-gradio==5.23.1
+# azure-ai-projects==1.0.0b7
+# azure-identity==1.21.0
+# gradio==5.23.1
+# ipykernel==6.29.5
+# ipywidgets==8.1.5
+# jupyter==1.1.1
+# matplotlib==3.10.1
+# pillow==11.1.0
+# python-dotenv==1.1.0
+# requests==2.32.3
+# yfinance==0.2.55
+
+azure-ai-projects==1.0.0b10
+azure-identity==1.23.0
+gradio==5.29.1
 ipykernel==6.29.5
-ipywidgets==8.1.5
+ipywidgets==8.1.7
 jupyter==1.1.1
-matplotlib==3.10.1
-pillow==11.1.0
+matplotlib==3.10.3
+pillow==11.2.1
 python-dotenv==1.1.0
-requests==2.32.3
-yfinance==0.2.55
