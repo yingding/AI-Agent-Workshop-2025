@@ -11,6 +11,7 @@
 # yfinance==0.2.55
 
 azure-ai-projects==1.0.0b10
+# azure-ai-projects==1.0.0b11
 azure-identity==1.23.0
 gradio==5.29.1
 ipykernel==6.29.5
