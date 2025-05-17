@@ -15,6 +15,7 @@ This is a code repository for AI Agent Workshop
 
 # Reference
 * Model Supports Azure AI Agent Service: https://learn.microsoft.com/en-gb/azure/ai-services/agents/concepts/model-region-support
+* Samples of new beta releases https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples
 
 
 
