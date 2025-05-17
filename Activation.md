@@ -1,8 +1,20 @@
 ## Install packages (general)
+create new venv
+```powershell
+cd $env:USERPROFILE\Documents\VCS\llm-train;
+
+$VERSION="3.12";
+$ENV_NAME="azagents";
+$ENV_SURFIX="pipb10";
+$PM="pip";
+.\envtools\create_env.ps1 -VERSION $VERSION -ENV_NAME $ENV_NAME -ENV_SURFIX $ENV_SURFIX -PM $PM;
+```
+
+Install
 ```powershell
 $VERSION="3.12";
 $ENV_NAME="azagents";
-$ENV_SURFIX="pip";
+$ENV_SURFIX="pipb10";
 
 $ENV_FULL_NAME = "$ENV_NAME$VERSION$ENV_SURFIX";
 # with the closing "\"

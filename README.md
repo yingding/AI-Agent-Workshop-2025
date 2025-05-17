@@ -1,3 +1,4 @@
+
 # AI-Agent-Workshop-2025
 This is a code repository for AI Agent Workshop
 
@@ -10,8 +11,9 @@ This is a code repository for AI Agent Workshop
 5. Open `http://127.0.0.1:7861/` in your browser
 
 ## Author's notes
-1. VENV: azagents3.12pip
+1. VENV: azagents3.12pipb10
 
+Note: `azure-ai-projects==1.0.0b11` works with new resource type `Azure AI Foundry project` autocreated by the new type of `Azure AI services`. These are different than the prevous `Azure AI project`, `Azure AI hub`, `Azure AI services`
 
 # Reference
 * Model Supports Azure AI Agent Service: https://learn.microsoft.com/en-gb/azure/ai-services/agents/concepts/model-region-support
