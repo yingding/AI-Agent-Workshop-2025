@@ -10,8 +10,8 @@ This is a code repository for AI Agent Workshop
 5. Open `http://127.0.0.1:7861/` in your browser
 
 ## Author's notes
-1. VENV: azagents3.12pip
-
+1. VENV: azagents3.12pipb10 for enterprise b10 azure-ai-projects SDK
+2. VENV: azagents3.12pip for medicare example for 
 
 # Reference
 * Model Supports Azure AI Agent Service: https://learn.microsoft.com/en-gb/azure/ai-services/agents/concepts/model-region-support

@@ -5,6 +5,7 @@
 
 # Environment variables
 .env
+med_diag.env
 
 # Virtual environment
 .venv/
