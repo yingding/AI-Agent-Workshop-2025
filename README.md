@@ -19,5 +19,6 @@ This is a code repository for AI Agent Workshop
 * Samples of new beta releases https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples
 * Azure AI Search https://learn.microsoft.com/en-gb/azure/ai-services/agents/how-to/tools/azure-ai-search?tabs=azurecli
 * Search Index Data Contributor and Search Service Contributor https://learn.microsoft.com/en-gb/azure/ai-services/agents/how-to/tools/azure-ai-search?tabs=pythonsdk#create-an-azure-ai-search-project-connection
+* azure ai agent doc https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples/agents_tools
 
 
