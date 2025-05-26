@@ -74,5 +74,5 @@ def fetch_datetime() -> str:
     
 # make functions callable a callable set from enterprise-streaming-agent.ipynb
 enterprise_fns: Set[Callable[..., Any]] = {
-    fetch_datetime,
+    # fetch_datetime,
 }
