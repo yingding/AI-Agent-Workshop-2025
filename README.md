@@ -17,6 +17,7 @@ This is a code repository for AI Agent Workshop
 * SDK Migration: https://learn.microsoft.com/en-us/semantic-kernel/support/migration/azureagent-foundry-ga-migration-guide?pivots=programming-language-python
 * Model Supports Azure AI Agent Service: https://learn.microsoft.com/en-gb/azure/ai-services/agents/concepts/model-region-support
 * Samples of new beta releases https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-agents/samples
+* Azure AI Search https://learn.microsoft.com/en-gb/azure/ai-services/agents/how-to/tools/azure-ai-search?tabs=azurecli
 
 
 
