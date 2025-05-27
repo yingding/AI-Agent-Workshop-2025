@@ -1,9 +1,8 @@
 azure-ai-projects==1.0.0b11
-# azure-ai-agents==1.1.0b1
+# ping the azure-ai-agents GA version, not the 1.1.0b1
 azure-ai-agents==1.0.0
 azure-identity==1.23.0
 gradio==5.31.0
-# gradio==5.29.1
 ipykernel==6.29.5
 ipywidgets==8.1.7
 jupyter==1.1.1
