@@ -22,3 +22,12 @@ Invoke-Expression "(Get-Command python).Source";
 
 deactivate
 ```
+
+## (Optional) remove all the packages
+For the venv python
+```powershell
+# which python powershell equivalent
+Invoke-Expression "(Get-Command python).Source";
+& "python" -m pip freeze | %{$_.split('==')} | %{python -m pip uninstall -y $_};
+& "python" -m pip list;
+```
