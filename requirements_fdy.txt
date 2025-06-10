@@ -1,0 +1,19 @@
+azure-ai-projects==1.0.0b11
+azure-ai-agents==1.0.1
+azure-identity==1.23.0
+# https://pypi.org/project/azure-ai-evaluation/
+azure-ai-evaluation==1.8.0
+gradio==5.31.0
+ipykernel==6.29.5
+ipywidgets==8.1.7
+jupyter==1.1.1
+matplotlib==3.10.3
+# pillow==11.2.1
+pillow==11.0.0
+python-dotenv==1.1.0
+pydantic-settings==2.9.1
+pydantic==2.11.5
+
+# opentelemetry 
+opentelemetry-sdk==1.31.1
+azure-monitor-opentelemetry==1.6.10

@@ -10,8 +10,14 @@ This is a code repository for AI Agent Workshop
 5. Open `http://127.0.0.1:7861/` in your browser
 
 ## Author's notes
+
 1. VENV: azagents3.12pipb10 for enterprise b10 azure-ai-projects SDK
-2. VENV: azagents3.12pip for medicare example for 
+2. VENV: azagents3.12pip for medicare example
+
+<!-- without gradio
+1. Hub VENV: azhubagents3.12pip for Hub base project v1 with eval SDK
+2. Foundry VENV: azfdyagents3.12pip for Foundry project v2 with eval SDK
+-->
 
 # Reference
 * SDK Migration: https://learn.microsoft.com/en-us/semantic-kernel/support/migration/azureagent-foundry-ga-migration-guide?pivots=programming-language-python
