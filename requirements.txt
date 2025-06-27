@@ -1,4 +1,5 @@
-azure-ai-projects==1.0.0b11
+# azure-ai-projects==1.0.0b11
+azure-ai-projects==1.0.0b12
 # ping the azure-ai-agents GA version, not the 1.1.0b1
 # bing grounding doesn't show up in the agent knowledge UI
 azure-ai-agents==1.0.1
